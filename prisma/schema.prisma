@@ -1,0 +1,46 @@
+generator authClient {
+    provider = "prisma-client-js"
+}
+
+datasource authDb {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model AuthUser {
+    id                  String               @id @default(uuid())
+    email               String               @unique
+    passwordHash        String
+    isEmailVerified     Boolean              @default(false)
+    verificationToken   String?
+    twoFactorEnabled    Boolean              @default(false)
+    twoFactorSecret     String?
+    createdAt           DateTime             @default(now())
+    updatedAt           DateTime             @updatedAt
+    RefreshToken        RefreshToken[]
+    PasswordResetTokens PasswordResetToken[]
+}
+
+model RefreshToken {
+    id        String   @id @default(cuid())
+    user      AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    tokenHash String
+    createdAt DateTime @default(now())
+    expiresAt DateTime
+    revoked   Boolean  @default(false)
+
+    @@index([userId])
+}
+
+model PasswordResetToken {
+    id        String   @id @default(uuid())
+    user      AuthUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    token     String   @unique
+    expiresAt DateTime
+    createdAt DateTime @default(now())
+
+    @@index([token])
+    @@index([expiresAt])
+}
