@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import prisma from "src/utils/prismaClient.js";
 import { sendVerificationEmail } from 'src/utils/email.js';
 import { AppError } from '@core/utils/AppError.js';
+import { USER_SERVICE_URL } from 'src/utils/env.js';
 
 const registerUser = async ({ email, username, password }) => {
 
@@ -31,7 +32,7 @@ const registerUser = async ({ email, username, password }) => {
 	});
 
 	try {
-		await axios.post('http://127.0.0.1:3001/api/v1/users/', {
+		await axios.post(`${USER_SERVICE_URL}/`, {
 			'userId': newUser.id,
 			username
 		});

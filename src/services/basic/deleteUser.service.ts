@@ -1,6 +1,7 @@
 import prisma from "src/utils/prismaClient.js";
 import axios from 'axios';
 import { AppError } from '@core/utils/AppError.js'
+import { USER_SERVICE_URL } from "src/utils/env.js";
 
 const deleteUser = async (userId: string, accessToken: string): Promise<any> => {
 	const user = await prisma.authUser.findUnique({
@@ -10,13 +11,12 @@ const deleteUser = async (userId: string, accessToken: string): Promise<any> => 
 	if (!user) throw new AppError('USER_NOT_FOUND');
 
 	try {
-		await axios.delete('http://127.0.0.1:3001/api/v1/users/me', {
+		await axios.delete(`${USER_SERVICE_URL}/me`, {
 			headers: {
-				Authorization: `${accessToken}`,
+				Authorization: `Bearer ${accessToken}`,
 			},
 		});
 	} catch (error) {
-		console.log(error);
 		if (axios.isAxiosError(error)) {
 			if (error.response?.status === 404) {
 				throw new AppError('USER_NOT_FOUND');
