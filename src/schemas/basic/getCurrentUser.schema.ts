@@ -2,12 +2,13 @@ import { RouteShorthandOptions } from "fastify";
 import authenticate from '@core/middlewares/authenticate.middleware.js';
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 
-const getCurrentUserSchema: RouteShorthandOptions = {
+const getCurrentUserSchema: RouteShorthandOptions =
+{
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Get information about current user",
-		// tags: ["auth"],
+		description: "Get information about current user",
+		tags: ["Auth"],
 		response: {
 			200: {
 				type: 'object',

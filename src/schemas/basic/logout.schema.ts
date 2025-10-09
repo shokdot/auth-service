@@ -2,12 +2,13 @@ import { RouteShorthandOptions } from "fastify";
 import authenticate from '@core/middlewares/authenticate.middleware.js';
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 
-const logoutUserSchema: RouteShorthandOptions = {
+const logoutUserSchema: RouteShorthandOptions =
+{
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Logut user delete cookie",
-		// tags: ["auth"],
+		description: "Logut user delete cookie",
+		tags: ["Auth"],
 		response: {
 			200: {
 				type: 'object',

@@ -1,11 +1,12 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const loginSchema: RouteShorthandOptions = {
+const loginSchema: RouteShorthandOptions =
+{
 	schema:
 	{
-		// description: "Login user with email and password",
-		// tags: ["auth"],
+		description: "Login user with email and password",
+		tags: ["Auth"],
 		body: {
 			type: 'object',
 			required: ['email', 'password'],

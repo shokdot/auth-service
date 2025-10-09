@@ -2,12 +2,13 @@ import { RouteShorthandOptions } from "fastify";
 import authenticate from '@core/middlewares/authenticate.middleware.js';
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 
-const twoFaConfirmSchema: RouteShorthandOptions = {
+const twoFaConfirmSchema: RouteShorthandOptions =
+{
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Confirmation 2FA authentication. Required authentication token",
-		// tags: ["2FA"],
+		description: "Confirmation 2FA authentication. Required authentication token",
+		tags: ["2FA"],
 		body: {
 			type: 'object',
 			required: ['token'],

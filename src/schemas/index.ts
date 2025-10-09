@@ -1,3 +1,4 @@
+import '@fastify/swagger';
 import registerSchema from "./basic/register.schema.js";
 import loginSchema from "./basic/login.schema.js";
 import verifyEmailSchema from "./basic/verifyEmail.schema.js"

@@ -1,10 +1,12 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const refreshSchema: RouteShorthandOptions = {
-	schema: {
-		// description: "Refresh access token using refresh token cookie",
-		// tags: ["auth"],
+const refreshSchema: RouteShorthandOptions =
+{
+	schema:
+	{
+		description: "Refresh access token using refresh token cookie",
+		tags: ["Auth"],
 		response: {
 			200: {
 				type: 'object',

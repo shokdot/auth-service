@@ -2,12 +2,13 @@ import authenticate from "@core/middlewares/authenticate.middleware.js";
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const changePassSchema: RouteShorthandOptions = {
+const changePassSchema: RouteShorthandOptions =
+{
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Change password",
-		// tags: ["password management"],
+		description: "Change password",
+		tags: ["Password Management"],
 		body: {
 			type: 'object',
 			required: ['oldPassword', 'newPassword'],
