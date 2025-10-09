@@ -13,7 +13,12 @@ const registerUser = async ({ email, username, password }) => {
 	username = username.trim();
 
 	const existingEmail = await prisma.authUser.findUnique({ where: { email } });
-	if (existingEmail) throw new AppError('EMAIL_EXISTS');
+	if (existingEmail) {
+		if (!existingEmail.passwordHash) {
+			throw new AppError('OAUTH_USER');
+		}
+		throw new AppError('EMAIL_EXISTS');
+	}
 
 	const passStrength = zxcvbn(password);
 	if (passStrength.score < 3) throw new AppError('WEAK_PASSWORD');
