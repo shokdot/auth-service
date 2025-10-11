@@ -42,10 +42,17 @@ const oauthLogin = (githubOAuth2: any) => {
 				});
 
 				const username = `user${uuidv4().slice(0, 8)}`;
-				const result = await axios.post(`${USER_SERVICE_URL}/`, {
-					'userId': user.id,
-					username
-				});
+				const result = await axios.post(`${USER_SERVICE_URL}/`,
+					{
+						'userId': user.id,
+						username
+					},
+					{
+						headers: {
+							'x-service-token': process.env.SERVICE_TOKEN,
+							'Content-Type': 'application/json',
+						}
+					});
 
 				if (result.status !== 201) throw new AppError('USER_SERVICE_ERROR');
 			}

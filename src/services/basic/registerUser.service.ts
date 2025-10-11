@@ -32,10 +32,17 @@ const registerUser = async ({ email, username, password }) => {
 	});
 
 	try {
-		await axios.post(`${USER_SERVICE_URL}/`, {
-			'userId': newUser.id,
-			username
-		});
+		await axios.post(`${USER_SERVICE_URL}/`,
+			{
+				'userId': newUser.id,
+				username
+			},
+			{
+				headers: {
+					'x-service-token': process.env.SERVICE_TOKEN,
+					'Content-Type': 'application/json',
+				},
+			});
 
 	} catch (error: any) {
 		if (axios.isAxiosError(error)) {
