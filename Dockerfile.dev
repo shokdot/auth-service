@@ -3,7 +3,9 @@ FROM node:20
 WORKDIR /app
 
 COPY apps/core/package*.json ./apps/core/
+COPY apps/core/tsconfig.json ./apps/core/
 COPY apps/auth-service/package*.json ./apps/auth-service/
+COPY apps/auth-service/tsconfig.json ./apps/auth-service/
 
 WORKDIR /app/apps/core
 RUN npm install
@@ -15,8 +17,11 @@ COPY apps/auth-service/prisma ./prisma
 RUN npx prisma generate
 
 WORKDIR /app
-COPY apps/core ./apps/core
+COPY apps/core/src ./apps/core/src
 COPY apps/auth-service ./apps/auth-service
+
+WORKDIR /app/apps/core
+RUN npm run build
 
 WORKDIR /app/apps/auth-service
 
