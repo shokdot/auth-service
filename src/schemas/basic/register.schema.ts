@@ -5,8 +5,8 @@ const registerSchema: RouteShorthandOptions =
 {
 	schema:
 	{
-		// description: "Registration/Create user",
-		// tags: ["auth"],
+		description: "Registration/Create user",
+		tags: ["Auth"],
 		body: {
 			type: 'object',
 			required: ['email', 'username', 'password',],

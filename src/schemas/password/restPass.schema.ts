@@ -4,8 +4,8 @@ import { RouteShorthandOptions } from "fastify";
 const resetPassSchema: RouteShorthandOptions = {
 	schema:
 	{
-		// description: "",
-		// tags: ["password management"],
+		description: "Reset password with token and password",
+		tags: ["Password Management"],
 		body: {
 			type: 'object',
 			required: ['token', 'password'],

@@ -1,11 +1,12 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const oauthLoginSchema: RouteShorthandOptions = {
+const oauthLoginSchema: RouteShorthandOptions =
+{
 	schema:
 	{
-		// tags: ['OAuth'],
-		// description: 'Login/Register user with OAuth github provider callback which must redirect to home',
+		description: 'Login/Register user with OAuth github provider callback which must redirect to home',
+		tags: ['OAuth'],
 		response: {
 			200: {
 				oneOf: [

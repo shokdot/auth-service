@@ -6,8 +6,8 @@ const twoFaSetupSchema: RouteShorthandOptions = {
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Enable 2FA authentication. Required authentication token",
-		// tags: ["2FA"],
+		description: "Enable 2FA authentication. Required authentication token",
+		tags: ["2FA"],
 		response: {
 			200: {
 				type: 'object',

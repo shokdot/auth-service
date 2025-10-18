@@ -1,10 +1,12 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const verifyEmailSchema: RouteShorthandOptions = {
-	schema: {
-		// description: "Email verifying via queryparam 'token'",
-		// tags: ["auth"],
+const verifyEmailSchema: RouteShorthandOptions =
+{
+	schema:
+	{
+		description: "Email verifying via queryparam 'token'",
+		tags: ["Auth"],
 		querystring: {
 			type: 'object',
 			properties: {

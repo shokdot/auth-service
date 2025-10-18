@@ -6,8 +6,8 @@ const twoFaConfirmSchema: RouteShorthandOptions = {
 	preHandler: [authenticate],
 	schema:
 	{
-		// description: "Confirmation 2FA authentication. Required authentication token",
-		// tags: ["2FA"],
+		description: "Confirmation 2FA authentication. Required authentication token",
+		tags: ["2FA"],
 		body: {
 			type: 'object',
 			required: ['token'],
