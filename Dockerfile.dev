@@ -1,25 +1,31 @@
 FROM node:20
 
-WORKDIR /app
+WORKDIR /apps
 
-COPY apps/core/package*.json ./apps/core/
-COPY apps/auth-service/package*.json ./apps/auth-service/
+COPY core/package*.json core/
+COPY core/tsconfig.json core/
 
-WORKDIR /app/apps/core
+COPY auth-service/package*.json auth-service/
+COPY auth-service/tsconfig.json auth-service/
+
+WORKDIR /apps/core
 RUN npm install
 
-WORKDIR /app/apps/auth-service
+WORKDIR /apps/auth-service
 RUN npm install
 
-COPY apps/auth-service/prisma ./prisma
+COPY auth-service/prisma ./prisma
 RUN npx prisma generate
 
-WORKDIR /app
-COPY apps/core ./apps/core
-COPY apps/auth-service ./apps/auth-service
+WORKDIR /apps
+COPY core/src core/src
+COPY auth-service/src auth-service/src
 
-WORKDIR /app/apps/auth-service
+WORKDIR /apps/core
+RUN npm run build
+
+WORKDIR /apps/auth-service
 
 EXPOSE 3000
 
-CMD [ "npm", "run", "dev" ]
+CMD ["sh", "-c", "npx prisma migrate deploy && npm run dev"]

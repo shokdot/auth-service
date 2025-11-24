@@ -13,7 +13,8 @@ const deleteUser = async (userId: string, accessToken: string): Promise<any> => 
 	try {
 		await axios.delete(`${USER_SERVICE_URL}/me`, {
 			headers: {
-				Authorization: `Bearer ${accessToken}`,
+				'Authorization': `Bearer ${accessToken}`,
+				'x-service-token': process.env.SERVICE_TOKEN,
 			},
 		});
 	} catch (error) {

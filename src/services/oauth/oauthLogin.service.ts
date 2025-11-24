@@ -44,32 +44,38 @@ const oauthLogin = (githubOAuth2: any) => {
 					},
 				});
 
-				let username = profileLogin;
-				try {
+				const username = `user${uuidv4().slice(0, 8)}`;
+				const result = await axios.post(`${USER_SERVICE_URL}/`,
+					{
+						'userId': user.id,
+						username
+					},
+					{
+						headers: {
+							'x-service-token': process.env.SERVICE_TOKEN,
+							'Content-Type': 'application/json',
+						}
+					});
+
+			} catch (error) {
+				if (error instanceof AxiosError && error.response?.status === 409) {
+					username = `user${uuidv4().slice(0, 8)}`;
 					await axios.post(`${USER_SERVICE_URL}/`, {
 						'userId': user.id,
 						username
 					});
-
-				} catch (error) {
-					if (error instanceof AxiosError && error.response?.status === 409) {
-						username = `user${uuidv4().slice(0, 8)}`;
-						await axios.post(`${USER_SERVICE_URL}/`, {
-							'userId': user.id,
-							username
-						});
-					}
-					else {
-						await prisma.authUser.delete({ where: { id: user.id } });
-						throw new AppError('USER_SERVICE_ERROR');
-					}
+				}
+				else {
+					await prisma.authUser.delete({ where: { id: user.id } });
+					throw new AppError('USER_SERVICE_ERROR');
 				}
 			}
+		}
 
 			const tokens = await generateJwtTokens(user.id);
 
-			return { userId: user.id, ...tokens };
-		},
+		return { userId: user.id, ...tokens };
+	},
 	};
 }
 

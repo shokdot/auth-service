@@ -14,6 +14,7 @@ import forgotPassSchema from "./password/forgetPass.schema.js";
 import resetPassSchema from "./password/restPass.schema.js";
 import changePassSchema from "./password/changePass.schema.js";
 import deleteUserSchema from "./basic/delete.schema.js";
+import fastifySwagger from "@fastify/swagger";
 
 export const basic = {
 	register: registerSchema,
