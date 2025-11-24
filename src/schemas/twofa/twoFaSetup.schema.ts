@@ -2,7 +2,8 @@ import { RouteShorthandOptions } from "fastify";
 import authenticate from '@core/middlewares/authenticate.middleware.js';
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 
-const twoFaSetupSchema: RouteShorthandOptions = {
+const twoFaSetupSchema: RouteShorthandOptions =
+{
 	preHandler: [authenticate],
 	schema:
 	{

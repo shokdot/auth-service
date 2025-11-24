@@ -1,7 +1,8 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const twoFaVerifySchema: RouteShorthandOptions = {
+const twoFaVerifySchema: RouteShorthandOptions =
+{
 	schema:
 	{
 		description: "Verifying 2FA code authentication. Required session_token from login endpoint",

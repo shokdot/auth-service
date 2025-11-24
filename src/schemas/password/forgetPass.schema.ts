@@ -1,7 +1,8 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
 
-const forgotPassSchema: RouteShorthandOptions = {
+const forgotPassSchema: RouteShorthandOptions =
+{
 	schema:
 	{
 		description: "Forgot password token generating request.",

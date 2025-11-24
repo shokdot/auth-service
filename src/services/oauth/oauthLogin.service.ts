@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import prisma from "src/utils/prismaClient.js";
 import generateJwtTokens from 'src/utils/generateJwtTokens.js';
 import { v4 as uuidv4 } from 'uuid';
@@ -24,6 +24,8 @@ const oauthLogin = (githubOAuth2: any) => {
 
 			if (profile.status !== 200 || emails.status !== 200) throw new AppError('GITHUB_API_ERROR');
 
+			const profileLogin = profile.data.login;
+			if (!profileLogin) throw new AppError('NO_GITHUB_USERNAME'); // controller catch
 
 			const primaryEmail = emails.data.find((e: any) => e.primary && e.verified)?.email;
 			if (!primaryEmail) throw new AppError('NO_VERIFIED_EMAIL');
@@ -33,6 +35,7 @@ const oauthLogin = (githubOAuth2: any) => {
 			});
 
 			if (!user) {
+
 				user = await prisma.authUser.create({
 					data: {
 						email: primaryEmail,
@@ -54,13 +57,25 @@ const oauthLogin = (githubOAuth2: any) => {
 						}
 					});
 
-				if (result.status !== 201) throw new AppError('USER_SERVICE_ERROR');
+			} catch (error) {
+				if (error instanceof AxiosError && error.response?.status === 409) {
+					username = `user${uuidv4().slice(0, 8)}`;
+					await axios.post(`${USER_SERVICE_URL}/`, {
+						'userId': user.id,
+						username
+					});
+				}
+				else {
+					await prisma.authUser.delete({ where: { id: user.id } });
+					throw new AppError('USER_SERVICE_ERROR');
+				}
 			}
+		}
 
 			const tokens = await generateJwtTokens(user.id);
 
-			return { userId: user.id, ...tokens };
-		},
+		return { userId: user.id, ...tokens };
+	},
 	};
 }
 

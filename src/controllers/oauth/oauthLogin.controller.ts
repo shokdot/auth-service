@@ -43,6 +43,9 @@ const oauthLoginHandler = () => {
 				case 'GITHUB_API_ERROR':
 					return sendError(reply, 502, error.code, 'Failed to fetch user profile or emails from GitHub API.');
 
+				case 'NO_GITHUB_USERNAME':
+					return sendError(reply, 400, error.code, 'GitHub username not found in profile.');
+
 				case 'NO_VERIFIED_EMAIL':
 					return sendError(reply, 400, error.code, 'No verified primary email found in GitHub account.');
 

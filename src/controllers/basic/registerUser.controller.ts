@@ -22,6 +22,8 @@ const registerUserHandler = async (request: FastifyRequest<{ Body: registerDTO }
 		switch (error.code) {
 			case 'EMAIL_EXISTS':
 				return sendError(reply, 409, error.code, 'Email is already registered', { field: 'email' });
+			case 'OAUTH_USER':
+				return sendError(reply, 409, error.code, 'This email is already registered with an OAuth account.', { field: 'email' });
 			case 'USERNAME_EXISTS':
 				return sendError(reply, 409, error.code, 'Username is already taken', { field: 'username' });
 			case 'WEAK_PASSWORD':
