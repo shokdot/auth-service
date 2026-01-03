@@ -50,8 +50,8 @@ const registerUser = async ({ email, username, password }) => {
 			});
 
 	} catch (error: any) {
+		await prisma.authUser.delete({ where: { id: newUser.id } });
 		if (axios.isAxiosError(error)) {
-			await prisma.authUser.delete({ where: { id: newUser.id } });
 			if (error.response?.status === 409) {
 				throw new AppError('USERNAME_EXISTS');
 			}
