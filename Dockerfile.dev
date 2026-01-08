@@ -7,15 +7,14 @@ COPY core/tsconfig.json core/
 
 COPY auth-service/package*.json auth-service/
 COPY auth-service/tsconfig.json auth-service/
+COPY auth-service/prisma.config.ts auth-service/
+COPY auth-service/prisma auth-service/prisma
 
 WORKDIR /apps/core
 RUN npm install
 
 WORKDIR /apps/auth-service
 RUN npm install
-
-COPY auth-service/prisma ./prisma
-RUN npx prisma generate
 
 WORKDIR /apps
 COPY core/src core/src
@@ -28,4 +27,4 @@ WORKDIR /apps/auth-service
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run dev"]
+CMD ["sh", "-c", "npm run db:deploy && npm run dev"]
