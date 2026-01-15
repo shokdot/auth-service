@@ -1,10 +1,10 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-	PORT: z.coerce.number().default(3000),
+	PORT: z.coerce.number().int().min(1).max(65535).default(3000),
 	HOST: z.string().default("0.0.0.0"),
-	USER_SERVICE_URL: z.string(),
-	SERVICE_TOKEN: z.string(),
+	USER_SERVICE_URL: z.url("USER_SERVICE_URL must be a valid URL"),
+	SERVICE_TOKEN: z.string().min(1, "SERVICE_TOKEN is required"),
 	JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
 	JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
 	JWT_TWO_FA: z.string().min(1, "JWT_TWO_FA is required")
