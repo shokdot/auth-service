@@ -37,15 +37,15 @@ const registerUser = async ({ email, username, password }) => {
 	});
 
 	try {
-		await axios.post(`${USER_SERVICE_URL}/`,
+		await axios.post(`${USER_SERVICE_URL}/internal/`,
 			{
 				'userId': newUser.id,
 				username
 			},
 			{
 				headers: {
-					'x-service-token': process.env.SERVICE_TOKEN,
 					'Content-Type': 'application/json',
+					'x-service-token': process.env.SERVICE_TOKEN,
 				},
 			});
 

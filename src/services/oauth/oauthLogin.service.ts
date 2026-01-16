@@ -52,15 +52,15 @@ const oauthLogin = (githubOAuth2: any) => {
 
 				let username = `user${uuidv4().slice(0, 8)}`;
 				try {
-					await axios.post(`${USER_SERVICE_URL}/`,
+					await axios.post(`${USER_SERVICE_URL}/internal/`,
 						{
 							'userId': user.id,
 							username
 						},
 						{
 							headers: {
-								'x-service-token': process.env.SERVICE_TOKEN,
 								'Content-Type': 'application/json',
+								'x-service-token': process.env.SERVICE_TOKEN,
 							}
 						});
 				}
@@ -69,13 +69,13 @@ const oauthLogin = (githubOAuth2: any) => {
 
 						username = `user${uuidv4().slice(0, 8)}`;
 
-						await axios.post(`${USER_SERVICE_URL}/`, {
+						await axios.post(`${USER_SERVICE_URL}/internal/`, {
 							userId: user.id,
 							username
 						}, {
 							headers: {
-								'x-service-token': process.env.SERVICE_TOKEN,
 								'Content-Type': 'application/json',
+								'x-service-token': process.env.SERVICE_TOKEN,
 							}
 						});
 
