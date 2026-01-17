@@ -6,6 +6,7 @@
         "start": "node dist/server.js",
         "build": "tsup",
         "dev": "tsx watch src/server.ts",
+        "predev": "npm run db:deploy",
         "db:deploy": "npx prisma migrate deploy && npx prisma generate"
     },
     "dependencies": {

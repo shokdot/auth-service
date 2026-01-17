@@ -27,4 +27,4 @@ WORKDIR /apps/auth-service
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run db:deploy && npm run dev"]
+CMD npm run dev
