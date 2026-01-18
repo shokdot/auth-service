@@ -6,11 +6,8 @@ export default defineConfig({
     target: 'es2022',
     outDir: 'dist',
     external: [
-        'prom-client',
         'fastify-metrics',
         'pino',
-        'pino-pretty',
-        'pino-socket',
         'fastify',
         '@fastify/cookie',
         '@fastify/cors',
