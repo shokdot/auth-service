@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "type": "module",
     "scripts": {
+        "prestart": "npm run db:deploy",
         "start": "node dist/server.js",
         "build": "tsup",
         "dev": "tsx watch src/server.ts",

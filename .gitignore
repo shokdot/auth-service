@@ -17,6 +17,7 @@ prisma/.DS_Store
 # Build output
 dist/
 build/
+data/
 
 # Logs
 logs/
