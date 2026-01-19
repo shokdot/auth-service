@@ -12,4 +12,4 @@ async function registerRoutes(app: FastifyInstance) {
 	await app.register(authRoutes, { prefix: `${API_PREFIX}/auth` });
 }
 
-startServer(app, registerRoutes, HOST, PORT);
+startServer(app, registerRoutes, HOST, PORT, SERVICE_NAME);
