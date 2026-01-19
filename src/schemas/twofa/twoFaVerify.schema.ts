@@ -1,5 +1,6 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
+import "@fastify/rate-limit";
 
 const twoFaVerifySchema: RouteShorthandOptions =
 {
@@ -47,6 +48,12 @@ const twoFaVerifySchema: RouteShorthandOptions =
 			400: errorResponseSchema,
 			500: errorResponseSchema
 		},
+	},
+	config: {
+		rateLimit: {
+			max: 5,
+			timeWindow: '1 minute'
+		}
 	}
 };
 

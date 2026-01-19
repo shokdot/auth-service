@@ -1,5 +1,6 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
+import "@fastify/rate-limit";
 
 const registerSchema: RouteShorthandOptions =
 {
@@ -54,8 +55,14 @@ const registerSchema: RouteShorthandOptions =
 			500: errorResponseSchema,
 			503: errorResponseSchema
 		},
+	},
+	config: {
+		rateLimit: {
+			max: 5,
+			timeWindow: '1 minute'
+		}
 	}
-}
+};
 
 
 export default registerSchema;

@@ -1,5 +1,6 @@
 import { errorResponseSchema } from "@core/schemas/error.schema.js";
 import { RouteShorthandOptions } from "fastify";
+import "@fastify/rate-limit";
 
 const forgotPassSchema: RouteShorthandOptions =
 {
@@ -28,6 +29,12 @@ const forgotPassSchema: RouteShorthandOptions =
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		},
+	},
+	config: {
+		rateLimit: {
+			max: 5,
+			timeWindow: '1 minute'
+		}
 	}
 };
 
