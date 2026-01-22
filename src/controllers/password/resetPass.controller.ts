@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import sendError from '@core/utils/sendError.js';
+import { sendError } from '@core/index.js';
 import { resetPass } from '@services/password/index.js'
 import resetPasswordDTO from 'src/dto/reset-password.dto.js';
 

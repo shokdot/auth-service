@@ -1,7 +1,6 @@
 import { FastifyReply } from "fastify";
 import { logoutUser } from "@services/basic/index.js";
-import sendError from '@core/utils/sendError.js';
-import { AuthRequest } from "@core/types/authRequest.js";
+import { sendError, AuthRequest } from '@core/index.js';
 
 const logoutUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 	try {

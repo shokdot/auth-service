@@ -1,7 +1,7 @@
 import prisma from "src/utils/prismaClient.js";
 import bcrypt from 'bcrypt';
 import zxcvbn from 'zxcvbn';
-import { AppError } from "@core/utils/AppError.js";
+import { AppError } from "@core/index.js";
 
 const resetPass = async (token: string, newPassword: string) => {
 	const tokenRecord = await prisma.passwordResetToken.findUnique({

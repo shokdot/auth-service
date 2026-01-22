@@ -1,9 +1,7 @@
 import speakeasy from 'speakeasy';
 import prisma from "src/utils/prismaClient.js";
 import generateJwtTokens from "src/utils/generateJwtTokens.js";
-import JwtType from '@core/types/jwtType.js';
-import { verifyJwt } from '@core/utils/jwt.js';
-import { AppError } from "@core/utils/AppError.js";
+import { JwtType, verifyJwt, AppError } from '@core/index.js';
 
 const twoFaVerify = async ({ token, session_token }) => {
 	if (!token || !session_token)

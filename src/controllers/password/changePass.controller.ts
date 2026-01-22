@@ -1,7 +1,6 @@
 import { FastifyReply } from 'fastify';
 import { changePass } from '@services/password/index.js'
-import { AuthRequest } from '@core/types/authRequest.js';
-import sendError from '@core/utils/sendError.js';
+import { AuthRequest, sendError } from '@core/index.js';
 import changePasswordDTO from 'src/dto/change-password.dto.js';
 
 const changePassHandler = async (request: AuthRequest<changePasswordDTO>, reply: FastifyReply) => {

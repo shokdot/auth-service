@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import sendError from '@core/utils/sendError.js';
+import { sendError } from '@core/index.js';
 import { refreshToken as refreshTokenService } from '@services/basic/index.js'
 
 const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply) => {

@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import sendError from '@core/utils/sendError.js';
+import { sendError } from '@core/index.js';
 import loginDTO from 'src/dto/login.dto.js';
 import { loginUser } from '@services/basic/index.js'
 

@@ -1,9 +1,7 @@
 import bcrypt from 'bcrypt';
 import prisma from "src/utils/prismaClient.js";
 import generateJwtTokens from 'src/utils/generateJwtTokens.js';
-import JwtType from '@core/types/jwtType.js';
-import { signJwt } from '@core/utils/jwt.js';
-import { AppError } from '@core/utils/AppError.js';
+import { JwtType, signJwt, AppError } from '@core/index.js';
 
 const loginUser = async ({ email, password }): Promise<any> => {
 	email = email.trim().toLowerCase();

@@ -1,6 +1,6 @@
 import prisma from "src/utils/prismaClient.js";
 import axios from 'axios';
-import { AppError } from '@core/utils/AppError.js'
+import { AppError } from '@core/index.js'
 import { USER_SERVICE_URL } from "src/utils/env.js";
 
 const deleteUser = async (userId: string, accessToken: string): Promise<any> => {

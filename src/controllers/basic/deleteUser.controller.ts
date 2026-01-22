@@ -1,7 +1,6 @@
 import { FastifyReply } from "fastify";
 import { deleteUser } from "@services/basic/index.js";
-import sendError from '@core/utils/sendError.js';
-import { AuthRequest } from "@core/types/authRequest.js";
+import { sendError, AuthRequest } from '@core/index.js';
 
 const deleteUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 	try {
@@ -18,7 +17,7 @@ const deleteUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 			case 'USER_NOT_FOUND':
 				return sendError(reply, 404, error.code, 'The requested user does not exist.');
 			case 'USER_SERVICE_ERROR':
-				return sendError(reply, 503, error.coded, 'Failed to communicate with user service.')
+				return sendError(reply, 503, error.code, 'Failed to communicate with user service.')
 
 			default:
 				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error')

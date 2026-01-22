@@ -1,7 +1,6 @@
 import { FastifyReply } from "fastify";
 import { twoFaConfirm } from "@services/twofa/index.js";
-import { AuthRequest } from "@core/types/authRequest.js";
-import sendError from '@core/utils/sendError.js';
+import { AuthRequest, sendError } from "@core/index.js";
 import twoFaDTO from "src/dto/twofa.dto.js";
 
 const twoFaConfirmHandler = async (request: AuthRequest<twoFaDTO>, reply: FastifyReply) => {

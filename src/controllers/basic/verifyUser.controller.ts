@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { verifyUser } from '@services/basic/index.js'
-import sendError from '@core/utils/sendError.js';
+import { sendError } from '@core/index.js';
 import verifyUserQuery from 'src/dto/verify-user.dto.js';
 
 const verifyUserHandler = async (request: FastifyRequest<{ Querystring: verifyUserQuery }>, reply: FastifyReply) => {

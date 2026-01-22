@@ -1,6 +1,6 @@
 import prisma from "src/utils/prismaClient.js";
 import speakeasy from 'speakeasy';
-import { AppError } from "@core/utils/AppError.js";
+import { AppError } from "@core/index.js";
 
 const twoFaConfirm = async ({ token, userId }) => {
 	if (!token)

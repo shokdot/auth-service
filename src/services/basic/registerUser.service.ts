@@ -4,7 +4,7 @@ import zxcvbn from 'zxcvbn';
 import crypto from 'crypto';
 import prisma from "src/utils/prismaClient.js";
 import { sendVerificationEmail } from 'src/utils/email.js';
-import { AppError } from '@core/utils/AppError.js';
+import { AppError } from '@core/index.js';
 import { USER_SERVICE_URL } from 'src/utils/env.js';
 
 const registerUser = async ({ email, username, password }) => {

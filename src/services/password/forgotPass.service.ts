@@ -1,7 +1,7 @@
 import prisma from "src/utils/prismaClient.js";
 import crypto from "crypto";
 import { sendResetEmail } from "src/utils/email.js";
-import { AppError } from "@core/utils/AppError.js";
+import { AppError } from "@core/index.js";
 
 const forgotPass = async (email: string) => {
 

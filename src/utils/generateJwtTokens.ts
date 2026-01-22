@@ -1,8 +1,7 @@
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import prisma from './prismaClient.js';
-import JwtType from '@core/types/jwtType.js';
-import { signJwt } from '@core/utils/jwt.js';
+import { JwtType, signJwt } from '@core/index.js';
 
 const generateJwtTokens = async (userId: string | undefined) => {
 	const tokenId = crypto.randomUUID();

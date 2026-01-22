@@ -1,7 +1,7 @@
 import prisma from "src/utils/prismaClient.js";
 import bcrypt from 'bcrypt';
 import zxcvbn from 'zxcvbn';
-import { AppError } from "@core/utils/AppError.js";
+import { AppError } from "@core/index.js";
 
 const changePass = async (userId: string, oldPassword: string, newPassword: string) => {
 	const user = await prisma.authUser.findUnique({

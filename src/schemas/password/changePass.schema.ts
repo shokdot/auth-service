@@ -1,5 +1,4 @@
-import authenticate from "@core/middlewares/authenticate.middleware.js";
-import { errorResponseSchema } from "@core/schemas/error.schema.js";
+import { authenticate, errorResponseSchema } from "@core/index.js";
 import { RouteShorthandOptions } from "fastify";
 import "@fastify/rate-limit";
 

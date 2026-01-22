@@ -1,5 +1,5 @@
 import prisma from "src/utils/prismaClient.js";
-import { AppError } from "@core/utils/AppError.js";
+import { AppError } from "@core/index.js";
 
 const getCurrentUser = async ({ userId }) => {
 	const user = await prisma.authUser.findUnique({
