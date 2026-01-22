@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { verifyUser } from '@services/basic/index.js'
-import { sendError } from '@core/index.js';
+import { sendError, AppError } from '@core/index.js';
 import verifyUserQuery from 'src/dto/verify-user.dto.js';
 
 const verifyUserHandler = async (request: FastifyRequest<{ Querystring: verifyUserQuery }>, reply: FastifyReply) => {
@@ -13,16 +13,10 @@ const verifyUserHandler = async (request: FastifyRequest<{ Querystring: verifyUs
 		});
 
 	} catch (error: any) {
-		switch (error.code) {
-			case 'MISSING_TOKEN':
-				return sendError(reply, 400, error.code, 'Verification token is required', { field: 'token' });
-
-			case 'INVALID_TOKEN':
-				return sendError(reply, 400, error.code, 'Invalid or expired verification token', { field: 'token' });
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 };
 

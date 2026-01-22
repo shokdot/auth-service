@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { sendError } from '@core/index.js';
+import { sendError, AppError } from '@core/index.js';
 import { forgotPass } from '@services/password/index.js'
 import forgotPasswordDTO from 'src/dto/forgot-password.dto.js';
 
@@ -15,16 +15,10 @@ const forgotPassHandler = async (request: FastifyRequest<{ Body: forgotPasswordD
 
 
 	} catch (error: any) {
-		switch (error.code) {
-			case 'USER_NOT_FOUND':
-				return sendError(reply, 404, error.code, 'You are not registered yet.', { field: 'email' });
-
-			case 'OAUTH_USER':
-				return sendError(reply, 400, error.code, 'This account was created using an OAuth provider.');
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 }
 

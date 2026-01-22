@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { sendError } from '@core/index.js';
+import { sendError, AppError } from '@core/index.js';
 import { refreshToken as refreshTokenService } from '@services/basic/index.js'
 
 const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -29,16 +29,10 @@ const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply)
 
 	}
 	catch (error: any) {
-		switch (error.code) {
-			case 'REFRESH_TOKEN_MISSING':
-				return sendError(reply, 401, error.code, 'No refresh token provided', { field: 'refreshToken' });
-
-			case 'INVALID_REFRESH_TOKEN':
-				return sendError(reply, 403, error.code, 'Invalid or expired refresh token', { field: 'refreshToken' });
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 }
 

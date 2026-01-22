@@ -1,5 +1,5 @@
 import { FastifyReply } from 'fastify'
-import { sendError, AuthRequest } from '@core/index.js';
+import { sendError, AuthRequest, AppError } from '@core/index.js';
 import { twoFaSetup } from '@services/twofa/index.js'
 
 const twoFaSetupHandler = async (request: AuthRequest, reply: FastifyReply) => {
@@ -13,17 +13,11 @@ const twoFaSetupHandler = async (request: AuthRequest, reply: FastifyReply) => {
 			message: '2FA setup initialized successfully'
 		});
 
-	} catch (error) {
-		switch (error.code) {
-			case 'OAUTH_USER':
-				return sendError(reply, 400, error.code, '2FA cannot be activated for OAuth users.');
-
-			case 'USER_NOT_FOUND':
-				return sendError(reply, 404, error.code, 'The requested user does not exist.');
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+	} catch (error: any) {
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 }
 

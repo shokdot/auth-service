@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { registerUser } from '@services/basic/index.js'
-import { sendError } from '@core/index.js';
+import { sendError, AppError } from '@core/index.js';
 import registerDTO from 'src/dto/register.dto.js';
 
 const registerUserHandler = async (request: FastifyRequest<{ Body: registerDTO }>, reply: FastifyReply) => {
@@ -19,21 +19,10 @@ const registerUserHandler = async (request: FastifyRequest<{ Body: registerDTO }
 
 		});
 	} catch (error: any) {
-		switch (error.code) {
-			case 'EMAIL_EXISTS':
-				return sendError(reply, 409, error.code, 'Email is already registered', { field: 'email' });
-			case 'OAUTH_USER':
-				return sendError(reply, 409, error.code, 'This email is already registered with an OAuth account.', { field: 'email' });
-			case 'USERNAME_EXISTS':
-				return sendError(reply, 409, error.code, 'Username is already taken', { field: 'username' });
-			case 'WEAK_PASSWORD':
-				return sendError(reply, 400, error.code, 'Password is too weak', { field: 'password' });
-			case 'USER_SERVICE_ERROR':
-				return sendError(reply, 503, error.code, 'Failed to communicate with user service.');
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 }
 

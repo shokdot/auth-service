@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { sendError } from '@core/index.js';
+import { sendError, AppError } from '@core/index.js';
 import loginDTO from 'src/dto/login.dto.js';
 import { loginUser } from '@services/basic/index.js'
 
@@ -36,17 +36,10 @@ const loginUserHandler = async (request: FastifyRequest<{ Body: loginDTO }>, rep
 
 
 	} catch (error: any) {
-		switch (error.code) {
-			case 'INVALID_CREDENTIALS':
-			case 'NOT_REGISTERED':
-				return sendError(reply, 401, error.code, 'Invalid email or password', { field: "login/password" });
-
-			case 'EMAIL_NOT_VERIFIED':
-				return sendError(reply, 403, error.code, 'Email address not verified', { field: 'email' });
-
-			default:
-				return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+		if (error instanceof AppError) {
+			return sendError(reply, error);
 		}
+		return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
 	}
 }
 
