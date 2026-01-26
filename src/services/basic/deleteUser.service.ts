@@ -11,9 +11,8 @@ const deleteUser = async (userId: string, accessToken: string): Promise<any> => 
 	if (!user) throw new AppError('USER_NOT_FOUND');
 
 	try {
-		await axios.delete(`${USER_SERVICE_URL}/internal/`, {
+		await axios.delete(`${USER_SERVICE_URL}/internal/${userId}`, {
 			headers: {
-				'Content-Type': 'application/json',
 				'x-service-token': process.env.SERVICE_TOKEN
 			},
 		});
