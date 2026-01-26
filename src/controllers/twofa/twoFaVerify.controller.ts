@@ -13,6 +13,7 @@ const twoFaVerifyHandler = async (request: AuthRequest<twoFaDTO>, reply: Fastify
 			secure: process.env.NODE_ENV === 'production',
 			path: '/refresh',
 			sameSite: 'strict',
+			signed: true,
 			maxAge: 7 * 24 * 60 * 60
 		});
 

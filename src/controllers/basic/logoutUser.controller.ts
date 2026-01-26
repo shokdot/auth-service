@@ -5,7 +5,14 @@ import { sendError, AuthRequest, AppError } from '@core/index.js';
 const logoutUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 	try {
 		const accessToken = request.accessToken;
-		const refreshToken = request.cookies?.refreshToken;
+		const signedRefreshToken = request.cookies?.refreshToken;
+		
+		let refreshToken: string | undefined;
+		if (signedRefreshToken) {
+			const unsignResult = request.unsignCookie(signedRefreshToken);
+			refreshToken = unsignResult.valid ? unsignResult.value : undefined;
+		}
+		
 		await logoutUser({ accessToken, refreshToken });
 
 		reply.clearCookie('refreshToken', {

@@ -20,6 +20,7 @@ const oauthLoginHandler = () => {
 				secure: process.env.NODE_ENV === 'production',
 				path: '/refresh',
 				sameSite: 'strict',
+				signed: true,
 				maxAge: 7 * 24 * 60 * 60
 			});
 

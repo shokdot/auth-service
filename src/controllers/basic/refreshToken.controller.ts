@@ -4,7 +4,18 @@ import { refreshToken as refreshTokenService } from '@services/basic/index.js'
 
 const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	try {
-		const refreshToken = request.cookies?.refreshToken;
+		const signedRefreshToken = request.cookies?.refreshToken;
+		
+		if (!signedRefreshToken) {
+			throw new AppError('REFRESH_TOKEN_MISSING');
+		}
+
+		const unsignResult = request.unsignCookie(signedRefreshToken);
+		if (!unsignResult.valid) {
+			throw new AppError('INVALID_REFRESH_TOKEN');
+		}
+
+		const refreshToken = unsignResult.value;
 
 		const { userId, accessToken, refreshToken: newRefreshToken } = await refreshTokenService({ refreshToken });
 
@@ -13,6 +24,7 @@ const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply)
 			secure: process.env.NODE_ENV === 'production',
 			path: '/refresh',
 			sameSite: 'strict',
+			signed: true,
 			maxAge: 7 * 24 * 60 * 60
 		});
 
@@ -29,6 +41,7 @@ const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply)
 
 	}
 	catch (error: any) {
+		console.log(error);
 		if (error instanceof AppError) {
 			return sendError(reply, error);
 		}
