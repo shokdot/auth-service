@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AppError } from '@core/index.js'
 import { USER_SERVICE_URL } from "src/utils/env.js";
 
-const deleteUser = async (userId: string, accessToken: string): Promise<any> => {
+const deleteUser = async (userId: string): Promise<any> => {
 	const user = await prisma.authUser.findUnique({
 		where: { id: userId }
 	});

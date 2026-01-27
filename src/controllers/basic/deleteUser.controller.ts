@@ -4,8 +4,8 @@ import { sendError, AuthRequest, AppError } from '@core/index.js';
 
 const deleteUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 	try {
-		const { userId, accessToken } = request;
-		await deleteUser(userId, accessToken);
+		const { userId } = request;
+		await deleteUser(userId);
 
 		return reply.status(200).send({
 			status: 'success',
