@@ -58,7 +58,7 @@ const getEmailTemplate = (content: string) => `
 `;
 
 export const sendResetEmail = async (to: string, token: string) => {
-	const resetUrl = `http://127.0.0.1:3000/api/v1/auth/password/reset?token=${token}`; //frontend route
+	const resetUrl = `http://localhost:3010/reset-password?token=${token}`;
 
 	const content = `
     <div style="text-align: center; margin-bottom: 30px;">

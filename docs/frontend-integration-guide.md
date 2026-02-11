@@ -73,7 +73,7 @@ const res = await fetch(`${AUTH_BASE}/register`, {
 3. Check `response.status` and `data.status`:
    - **status === 'success'**:  
      - Save `data.accessToken` (and optionally `data.expiresIn`).  
-     - Cookie `refreshToken` is set by server (path `/refresh`).  
+     - Cookie `refreshToken` is set by server (path `/api/v1/auth`).  
      - Redirect to app (e.g. dashboard).
    - **status === 'pending'** (2FA):  
      - Save `data.userId` and **`data.twoFaToken`** (this is the `session_token` for 2FA verify).  
@@ -134,7 +134,7 @@ const json = await res.json();
 setAccessToken(json.data.accessToken);
 ```
 
-**Important:** The refresh cookie is only sent to the **auth service** URL (and only for path `/refresh`). So this request must go to the auth service origin (same origin or configured CORS with credentials).
+**Important:** The refresh cookie is only sent to the **auth service** URL (path `/api/v1/auth`). So this request must go to the auth service origin (same origin or configured CORS with credentials).
 
 ---
 

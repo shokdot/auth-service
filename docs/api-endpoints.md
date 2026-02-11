@@ -17,7 +17,7 @@ Example: `http://localhost:3000/api/v1/auth`
 ### Refresh token
 
 - **Where**: HttpOnly cookie named `refreshToken`
-- **Path**: Cookie is set for path `/refresh` (i.e. only sent to the refresh endpoint)
+- **Path**: Cookie is set for path `/api/v1/auth` (sent to auth endpoints including refresh and logout)
 - **SameSite**: `strict`
 - **Purpose**: Obtain new access token via `POST /refresh` (with credentials so cookie is sent)
 
@@ -91,7 +91,7 @@ Log in with email and password.
 
 **Success (200) — no 2FA:**
 
-- Response body includes access token; refresh token is set in cookie (path `/refresh`).
+- Response body includes access token; refresh token is set in cookie (path `/api/v1/auth`).
 
 ```json
 {

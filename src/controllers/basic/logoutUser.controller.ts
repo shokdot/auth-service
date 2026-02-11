@@ -6,17 +6,17 @@ const logoutUserHandler = async (request: AuthRequest, reply: FastifyReply) => {
 	try {
 		const accessToken = request.accessToken;
 		const signedRefreshToken = request.cookies?.refreshToken;
-		
+
 		let refreshToken: string | undefined;
 		if (signedRefreshToken) {
 			const unsignResult = request.unsignCookie(signedRefreshToken);
 			refreshToken = unsignResult.valid ? unsignResult.value : undefined;
 		}
-		
+
 		await logoutUser({ accessToken, refreshToken });
 
 		reply.clearCookie('refreshToken', {
-			path: '/refresh',
+			path: '/api/v1/auth',
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: 'strict',

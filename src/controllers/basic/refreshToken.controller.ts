@@ -5,7 +5,7 @@ import { refreshToken as refreshTokenService } from '@services/basic/index.js'
 const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply) => {
 	try {
 		const signedRefreshToken = request.cookies?.refreshToken;
-		
+
 		if (!signedRefreshToken) {
 			throw new AppError('REFRESH_TOKEN_MISSING');
 		}
@@ -22,7 +22,7 @@ const refreshTokenHandler = async (request: FastifyRequest, reply: FastifyReply)
 		reply.setCookie('refreshToken', newRefreshToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
-			path: '/refresh',
+			path: '/api/v1/auth',
 			sameSite: 'strict',
 			signed: true,
 			maxAge: 7 * 24 * 60 * 60

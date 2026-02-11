@@ -18,7 +18,7 @@ const loginUserHandler = async (request: FastifyRequest<{ Body: loginDTO }>, rep
 		reply.setCookie('refreshToken', result.refreshToken, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
-			path: '/refresh',
+			path: '/api/v1/auth',
 			sameSite: 'strict',
 			signed: true,
 			maxAge: 7 * 24 * 60 * 60
