@@ -24,7 +24,10 @@ const oauthRoutes = async (app: FastifyInstance) => {
 			},
 		},
 		startRedirectPath: "/github",
-		callbackUri: "http://localhost:3000/api/v1/auth/oauth/github/callback",
+		callbackUri: `${process.env.OAUTH_CALLBACK_URL || 'http://localhost:3000/api/v1/auth/oauth/github/callback'}`,
+		cookie: {
+			signed: false,
+		},
 	});
 
 	app.get('/github/callback', oauth.oauthLogin, oauthLoginHandler());
