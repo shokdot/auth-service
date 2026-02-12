@@ -35,7 +35,7 @@ const refreshSchema: RouteShorthandOptions =
 	},
 	config: {
 		rateLimit: {
-			max: 5,
+			max: 30,
 			timeWindow: '1 minute'
 		}
 	}

@@ -8,6 +8,8 @@ declare module "fastify" {
 	}
 }
 
+const FRONTEND_ORIGIN = process.env.FRONTEND_URL || 'https://localhost:3000';
+
 const oauthLoginHandler = () => {
 	return async (request: FastifyRequest, reply: FastifyReply) => {
 		try {
@@ -24,23 +26,15 @@ const oauthLoginHandler = () => {
 				maxAge: 7 * 24 * 60 * 60
 			});
 
-			return reply.status(200).send({
-				status: 'success',
-				data: {
-					userId: result.userId,
-					accessToken: result.accessToken,
-					tokenType: 'Bearer',
-					expiresIn: 900,
-				},
-				message: 'Login successful',
-			});
+			// Redirect to the frontend callback page.
+			// The page will call /api/v1/auth/refresh to obtain an access token
+			// using the refreshToken cookie that was just set above.
+			return reply.redirect(`${FRONTEND_ORIGIN}/auth/callback`);
 
 		}
 		catch (error: any) {
-			if (error instanceof AppError) {
-				return sendError(reply, error);
-			}
-			return sendError(reply, 500, 'INTERNAL_SERVER_ERROR', 'Internal server error');
+			const errorMsg = error instanceof AppError ? error.code : 'INTERNAL_SERVER_ERROR';
+			return reply.redirect(`${FRONTEND_ORIGIN}/login?error=${encodeURIComponent(errorMsg)}`);
 		}
 	};
 };

@@ -1,60 +1,16 @@
-import { errorResponseSchema } from "@core/index.js";
 import { RouteShorthandOptions } from "fastify";
 
 const oauthLoginSchema: RouteShorthandOptions =
 {
 	schema:
 	{
-		description: 'Login/Register user with OAuth github provider callback which must redirect to home',
+		description: 'OAuth github callback — sets refreshToken cookie and redirects to frontend /auth/callback',
 		tags: ['OAuth'],
 		response: {
-			200: {
-				oneOf: [
-					{
-						type: 'object',
-						additionalProperties: false,
-						required: ['status', 'data', 'message'],
-						properties: {
-							status: { type: 'string', enum: ['success'] },
-							data: {
-								type: 'object',
-								required: ['userId', 'accessToken', 'tokenType', 'expiresIn'],
-								additionalProperties: false,
-								properties: {
-									userId: { type: 'string', format: 'uuid', description: 'User ID' },
-									accessToken: { type: 'string' },
-									tokenType: { type: 'string' },
-									expiresIn: { type: 'number' },
-								}
-							},
-							message: { type: 'string' },
-						}
-					},
-					{
-						type: 'object',
-						additionalProperties: false,
-						required: ['status', 'data', 'message'],
-						properties: {
-							status: { type: 'string', enum: ['pending'] },
-							data: {
-								type: 'object',
-								required: ['userId', 'twoFactorRequired', 'twoFaToken'],
-								additionalProperties: false,
-								properties: {
-									userId: { type: 'string', format: 'uuid', description: 'User ID' },
-									twoFactorRequired: { type: 'boolean' },
-									twoFaToken: { type: 'string' },
-								}
-							},
-							message: { type: 'string' },
-						}
-					}
-				]
+			302: {
+				type: 'string',
+				description: 'Redirect to frontend callback page',
 			},
-			400: errorResponseSchema,
-			500: errorResponseSchema,
-			502: errorResponseSchema,
-			503: errorResponseSchema
 		},
 	}
 };
