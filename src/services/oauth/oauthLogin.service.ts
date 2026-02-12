@@ -50,35 +50,29 @@ const oauthLogin = (githubOAuth2: any) => {
 					},
 				});
 
-				let username = `user${uuidv4().slice(0, 8)}`;
+				const userServiceHeaders = {
+					'Content-Type': 'application/json',
+					'x-service-token': process.env.SERVICE_TOKEN,
+				};
+
+				let username = profileLogin;
 				try {
 					await axios.post(`${USER_SERVICE_URL}/internal/`,
-						{
-							'userId': user.id,
-							username
-						},
-						{
-							headers: {
-								'Content-Type': 'application/json',
-								'x-service-token': process.env.SERVICE_TOKEN,
-							}
-						});
-				}
-				catch (error) {
+						{ userId: user.id, username },
+						{ headers: userServiceHeaders },
+					);
+				} catch (error) {
 					if (error?.response?.status === 409) {
-
-						username = `user${uuidv4().slice(0, 8)}`;
-
-						await axios.post(`${USER_SERVICE_URL}/internal/`, {
-							userId: user.id,
-							username
-						}, {
-							headers: {
-								'Content-Type': 'application/json',
-								'x-service-token': process.env.SERVICE_TOKEN,
-							}
-						});
-
+						username = `${profileLogin}_${uuidv4().slice(0, 6)}`;
+						try {
+							await axios.post(`${USER_SERVICE_URL}/internal/`,
+								{ userId: user.id, username },
+								{ headers: userServiceHeaders },
+							);
+						} catch {
+							await prisma.authUser.delete({ where: { id: user.id } });
+							throw new AppError('USER_SERVICE_ERROR');
+						}
 					} else {
 						await prisma.authUser.delete({ where: { id: user.id } });
 						throw new AppError('USER_SERVICE_ERROR');
