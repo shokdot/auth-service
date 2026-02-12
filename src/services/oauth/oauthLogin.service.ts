@@ -40,12 +40,15 @@ const oauthLogin = (githubOAuth2: any) => {
 				where: { email: primaryEmail },
 			});
 
+			const githubId = profile.data.id.toString();
+
 			if (!user) {
 
 				user = await prisma.authUser.create({
 					data: {
 						email: primaryEmail,
 						passwordHash: '',
+						githubId,
 						isEmailVerified: true,
 					},
 				});
@@ -79,7 +82,13 @@ const oauthLogin = (githubOAuth2: any) => {
 					}
 				}
 
+			} else if (!user.githubId) {
+				await prisma.authUser.update({
+					where: { id: user.id },
+					data: { githubId },
+				});
 			}
+
 			const tokens = await generateJwtTokens(user.id);
 
 			return { userId: user.id, ...tokens };

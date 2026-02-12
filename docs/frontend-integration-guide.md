@@ -275,7 +275,7 @@ const res = await fetch(`${AUTH_BASE}/2fa/verify`, {
 ### Change password (logged in)
 
 1. User enters current password and new password.  
-2. `POST /api/v1/auth/password/change` with **Bearer** and body:  
+2. `PUT /api/v1/auth/password/change` with **Bearer** and body:  
    `{ "oldPassword": "...", "newPassword": "..." }`.  
    (API uses `oldPassword` / `newPassword`; confirm in [api-endpoints](api-endpoints.md).)
 

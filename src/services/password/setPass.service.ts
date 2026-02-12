@@ -3,17 +3,14 @@ import bcrypt from 'bcrypt';
 import zxcvbn from 'zxcvbn';
 import { AppError } from "@core/index.js";
 
-const changePass = async (userId: string, oldPassword: string, newPassword: string) => {
+const setPass = async (userId: string, newPassword: string) => {
 	const user = await prisma.authUser.findUnique({
 		where: { id: userId }
 	});
 
 	if (!user) throw new AppError('USER_NOT_FOUND');
 
-	if (!user.passwordHash) throw new AppError('OAUTH_USER');
-
-	const isPasswordValid = await bcrypt.compare(oldPassword, user.passwordHash);
-	if (!isPasswordValid) throw new AppError('WRONG_PASSWORD');
+	if (user.passwordHash) throw new AppError('PASSWORD_ALREADY_SET');
 
 	const passStrength = zxcvbn(newPassword);
 	if (passStrength.score < 3) throw new AppError('WEAK_PASSWORD');
@@ -24,7 +21,6 @@ const changePass = async (userId: string, oldPassword: string, newPassword: stri
 		where: { id: userId },
 		data: { passwordHash: hashedPassword },
 	});
-
 }
 
-export default changePass;
+export default setPass;

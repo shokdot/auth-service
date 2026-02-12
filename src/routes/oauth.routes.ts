@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { oauthLoginHandler } from '@controllers/oauth/index.js'
+import { oauthLoginHandler, oauthDisconnectHandler } from '@controllers/oauth/index.js'
 import fastifyOauth2 from "@fastify/oauth2";
 import { oauth } from "@schemas/index.js";
 
@@ -31,6 +31,7 @@ const oauthRoutes = async (app: FastifyInstance) => {
 	});
 
 	app.get('/github/callback', oauth.oauthLogin, oauthLoginHandler());
+	app.delete('/github', oauth.oauthDisconnect, oauthDisconnectHandler);
 }
 
 export default oauthRoutes;

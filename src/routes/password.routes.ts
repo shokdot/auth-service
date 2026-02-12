@@ -4,12 +4,14 @@ import {
 	forgotPassHandler,
 	resetPassHandler,
 	changePassHandler,
+	setPassHandler,
 } from '@controllers/password/index.js'
 
 const passwordRoutes = async (app: FastifyInstance) => {
 	app.post('/forgot', password.forgotPass, forgotPassHandler);
 	app.post('/reset', password.resetPass, resetPassHandler);
 	app.put('/change', password.changePass, changePassHandler);
+	app.put('/set', password.setPass, setPassHandler);
 }
 
 export default passwordRoutes;

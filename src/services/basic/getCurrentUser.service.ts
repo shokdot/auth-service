@@ -7,7 +7,10 @@ const getCurrentUser = async ({ userId }) => {
 		select: {
 			id: true,
 			email: true,
+			passwordHash: true,
+			githubId: true,
 			isEmailVerified: true,
+			twoFactorEnabled: true,
 			createdAt: true,
 			updatedAt: true
 		}
@@ -15,8 +18,13 @@ const getCurrentUser = async ({ userId }) => {
 
 	if (!user) throw new AppError('USER_NOT_FOUND');
 
-	const { id, ...rest } = user;
-	return { userId: id, ...rest };
+	const { id, passwordHash, githubId, ...rest } = user;
+	return {
+		userId: id,
+		...rest,
+		hasPassword: !!passwordHash,
+		githubLinked: !!githubId,
+	};
 }
 
 export default getCurrentUser;

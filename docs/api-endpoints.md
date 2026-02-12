@@ -12,7 +12,7 @@ Example: `http://localhost:3000/api/v1/auth`
 
 - **Where**: `Authorization` header
 - **Format**: `Bearer <accessToken>`
-- **Required for**: `/me`, `DELETE /me`, `/logout`, `/password/change`, `/2fa/setup`, `/2fa/confirm`, `/2fa/disable`
+- **Required for**: `/me`, `DELETE /me`, `/logout`, `/password/change`, `/password/set`, `DELETE /oauth/github`, `/2fa/setup`, `/2fa/confirm`, `/2fa/disable`
 
 ### Refresh token
 
@@ -166,12 +166,21 @@ Get current user info. Requires **Bearer** access token.
     "userId": "uuid",
     "email": "user@example.com",
     "isEmailVerified": true,
+    "hasPassword": true,
+    "githubLinked": false,
+    "twoFactorEnabled": false,
     "createdAt": "ISO8601",
     "updatedAt": "ISO8601"
   },
   "message": "..."
 }
 ```
+
+| Field              | Type    | Description                                     |
+|-------------------|---------|--------------------------------------------------|
+| hasPassword       | boolean | `true` if user has a password set (local login)  |
+| githubLinked      | boolean | `true` if a GitHub account is connected          |
+| twoFactorEnabled  | boolean | `true` if two-factor authentication is enabled   |
 
 **Errors:** 401, 403, 404, 500.
 
@@ -282,6 +291,25 @@ Handled by the backend. Query params come from GitHub. On success, backend sets 
 ```
 
 **Errors:** 400, 500, 502, 503.
+
+---
+
+### DELETE `/oauth/github`
+
+Disconnect the linked GitHub account. Only allowed if the user has a password set (so they can still log in). Requires **Bearer** access token.
+
+**Rate limit:** 5 per minute.
+
+**Success (200):**
+
+```json
+{
+  "status": "success",
+  "message": "GitHub account has been disconnected."
+}
+```
+
+**Errors:** 400 (`GITHUB_NOT_LINKED`, `PASSWORD_REQUIRED_FOR_DISCONNECT`), 401, 404, 500.
 
 ---
 
@@ -456,6 +484,31 @@ Change password when already logged in. Requires **Bearer** access token.
 
 ---
 
+### PUT `/password/set`
+
+Set a password for OAuth-only users who don't have one. Only works if the user currently has no password (`passwordHash` is empty). Requires **Bearer** access token.
+
+**Rate limit:** 5 per minute.
+
+**Request body:**
+
+| Field        | Type   | Required | Description  |
+|-------------|--------|----------|--------------|
+| newPassword | string | Yes      | New password |
+
+**Success (200):**
+
+```json
+{
+  "status": "success",
+  "message": "Password has been set successfully."
+}
+```
+
+**Errors:** 400 (`PASSWORD_ALREADY_SET`, `WEAK_PASSWORD`), 401, 404, 500.
+
+---
+
 ## Summary table
 
 | Method | Path                     | Auth        | Purpose              |
@@ -469,6 +522,7 @@ Change password when already logged in. Requires **Bearer** access token.
 | GET    | `/verify-email`           | Query token| Verify email         |
 | GET    | `/oauth/github`           | —          | Start GitHub OAuth   |
 | GET    | `/oauth/github/callback`  | —          | OAuth callback       |
+| DELETE | `/oauth/github`           | Bearer     | Disconnect GitHub    |
 | POST   | `/2fa/setup`              | Bearer     | Start 2FA setup      |
 | POST   | `/2fa/confirm`            | Bearer     | Confirm 2FA          |
 | POST   | `/2fa/verify`             | —          | Complete 2FA login    |
@@ -476,3 +530,4 @@ Change password when already logged in. Requires **Bearer** access token.
 | POST   | `/password/forgot`        | —          | Request reset        |
 | POST   | `/password/reset`        | —          | Reset with token     |
 | PUT    | `/password/change`       | Bearer     | Change password      |
+| PUT    | `/password/set`          | Bearer     | Set password (OAuth) |

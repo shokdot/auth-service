@@ -10,6 +10,7 @@ model AuthUser {
     id                  String               @id @default(uuid())
     email               String               @unique
     passwordHash        String
+    githubId            String?              @unique
     isEmailVerified     Boolean              @default(false)
     verificationToken   String?
     twoFactorEnabled    Boolean              @default(false)
