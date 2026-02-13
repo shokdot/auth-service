@@ -3,7 +3,7 @@ import prisma from "src/utils/prismaClient.js";
 import generateJwtTokens from 'src/utils/generateJwtTokens.js';
 import { v4 as uuidv4 } from 'uuid';
 import { AppError } from '@core/index.js';
-import { USER_SERVICE_URL } from 'src/utils/env.js';
+import { USER_SERVICE_URL, STATS_SERVICE_URL } from 'src/utils/env.js';
 
 const oauthLogin = (githubOAuth2: any) => {
 	return {
@@ -80,6 +80,20 @@ const oauthLogin = (githubOAuth2: any) => {
 						await prisma.authUser.delete({ where: { id: user.id } });
 						throw new AppError('USER_SERVICE_ERROR');
 					}
+				}
+
+				// Initialize player stats so user appears in leaderboard
+				try {
+					await axios.post(`${STATS_SERVICE_URL}/internal/init-stats`,
+						{ userId: user.id },
+						{
+							headers: {
+								'Content-Type': 'application/json',
+								'x-service-token': process.env.SERVICE_TOKEN,
+							},
+						});
+				} catch {
+					// Non-critical: stats will be created on first match if this fails
 				}
 
 			} else if (!user.githubId) {

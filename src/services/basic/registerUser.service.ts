@@ -5,7 +5,7 @@ import crypto from 'crypto';
 import prisma from "src/utils/prismaClient.js";
 import { sendVerificationEmail } from 'src/utils/email.js';
 import { AppError } from '@core/index.js';
-import { USER_SERVICE_URL } from 'src/utils/env.js';
+import { USER_SERVICE_URL, STATS_SERVICE_URL } from 'src/utils/env.js';
 
 const registerUser = async ({ email, username, password }) => {
 
@@ -63,6 +63,20 @@ const registerUser = async ({ email, username, password }) => {
 	}
 
 	// await sendVerificationEmail(email, verificationToken, username); //enable in prod
+
+	// Initialize player stats so user appears in leaderboard
+	try {
+		await axios.post(`${STATS_SERVICE_URL}/internal/init-stats`,
+			{ userId: newUser.id },
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					'x-service-token': process.env.SERVICE_TOKEN,
+				},
+			});
+	} catch {
+		// Non-critical: stats will be created on first match if this fails
+	}
 
 	const { passwordHash: _, ...safeUser } = newUser;
 
