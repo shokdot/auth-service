@@ -5,6 +5,8 @@ const envSchema = z.object({
 	HOST: z.string().default("0.0.0.0"),
 	USER_SERVICE_URL: z.url("USER_SERVICE_URL must be a valid URL"),
 	STATS_SERVICE_URL: z.url("STATS_SERVICE_URL must be a valid URL"),
+	CHAT_SERVICE_URL: z.url("CHAT_SERVICE_URL must be a valid URL"),
+	NOTIFICATION_SERVICE_URL: z.url("NOTIFICATION_SERVICE_URL must be a valid URL"),
 	SERVICE_TOKEN: z.string().min(1, "SERVICE_TOKEN is required"),
 	JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
 	JWT_REFRESH_SECRET: z.string().min(1, "JWT_REFRESH_SECRET is required"),
@@ -17,6 +19,8 @@ export const PORT = env.PORT;
 export const HOST = env.HOST;
 export const USER_SERVICE_URL = env.USER_SERVICE_URL;
 export const STATS_SERVICE_URL = env.STATS_SERVICE_URL;
+export const CHAT_SERVICE_URL = env.CHAT_SERVICE_URL;
+export const NOTIFICATION_SERVICE_URL = env.NOTIFICATION_SERVICE_URL;
 export const SERVICE_TOKEN = env.SERVICE_TOKEN;
 export const JWT_SECRET = env.JWT_SECRET;
 export const JWT_REFRESH_SECRET = env.JWT_REFRESH_SECRET;
