@@ -62,7 +62,7 @@ const registerUser = async ({ email, username, password }) => {
 		throw new AppError(error.code);
 	}
 
-	// await sendVerificationEmail(email, verificationToken, username); //enable in prod
+	await sendVerificationEmail(email, verificationToken, username);
 
 	// Initialize player stats so user appears in leaderboard
 	try {
