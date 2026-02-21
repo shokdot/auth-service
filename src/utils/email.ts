@@ -1,14 +1,15 @@
 import nodemailer, { Transporter } from "nodemailer";
+import { FRONTEND_URL } from "src/utils/env.js";
 
 const transporter: Transporter = nodemailer.createTransport({
-	service: "Gmail",
-	host: process.env.SMTP_HOST,
-	port: Number(process.env.SMTP_PORT),
-	secure: true,
-	auth: {
-		user: process.env.SMTP_USER,
-		pass: process.env.SMTP_PASS,
-	},
+  service: "Gmail",
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
 });
 
 const getEmailTemplate = (content: string) => `
@@ -17,7 +18,7 @@ const getEmailTemplate = (content: string) => `
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ft_transcendence</title>
+  <title>iPong</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f5f5f7;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f5f5f7; padding: 40px 20px;">
@@ -27,7 +28,7 @@ const getEmailTemplate = (content: string) => `
           <!-- Header -->
           <tr>
             <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 40px 30px; text-align: center;">
-              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">ft_transcendence</h1>
+              <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;">iPong</h1>
             </td>
           </tr>
           
@@ -42,7 +43,7 @@ const getEmailTemplate = (content: string) => `
           <tr>
             <td style="background-color: #fafafa; padding: 30px 40px; text-align: center; border-top: 1px solid #e5e5e7;">
               <p style="margin: 0 0 10px; color: #86868b; font-size: 13px; line-height: 1.5;">
-                This email was sent from ft_transcendence. If you didn't request this, you can safely ignore it.
+                This email was sent from iPong. If you didn't request this, you can safely ignore it.
               </p>
               <p style="margin: 0; color: #86868b; font-size: 13px;">
                 © ${new Date().getFullYear()} ft_transcendence. All rights reserved.
@@ -58,9 +59,9 @@ const getEmailTemplate = (content: string) => `
 `;
 
 export const sendResetEmail = async (to: string, token: string) => {
-	const resetUrl = `http://localhost:3010/reset-password?token=${token}`;
+  const resetUrl = `${FRONTEND_URL}/reset-password?token=${token}`;
 
-	const content = `
+  const content = `
     <div style="text-align: center; margin-bottom: 30px;">
       <div style="display: inline-block; background-color: #fff3cd; border-radius: 50%; padding: 20px; margin-bottom: 20px;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -93,18 +94,18 @@ export const sendResetEmail = async (to: string, token: string) => {
     </div>
   `;
 
-	await transporter.sendMail({
-		from: '"ft_transcendence" <no-reply@bigbang-transcendence.com>',
-		to,
-		subject: "Reset Your Password - ft_transcendence",
-		html: getEmailTemplate(content),
-	});
+  await transporter.sendMail({
+    from: '"iPong" <no-reply@bigbang-transcendence.com>',
+    to,
+    subject: "Reset Your Password - iPong",
+    html: getEmailTemplate(content),
+  });
 };
 
 export const sendVerificationEmail = async (to: string, token: string, username: string) => {
-	const verificationUrl = `http://127.0.0.1:3000/api/v1/auth/verify-email?token=${token}`;
+  const verificationUrl = `${FRONTEND_URL}/verify-email?token=${token}`;
 
-	const content = `
+  const content = `
     <div style="text-align: center; margin-bottom: 30px;">
       <div style="display: inline-block; background-color: #d1f4e0; border-radius: 50%; padding: 20px; margin-bottom: 20px;">
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +114,7 @@ export const sendVerificationEmail = async (to: string, token: string, username:
       </div>
     </div>
     
-    <h2 style="margin: 0 0 16px; color: #1d1d1f; font-size: 24px; font-weight: 600; text-align: center;">Welcome to ft_transcendence, ${username}! 🎉</h2>
+    <h2 style="margin: 0 0 16px; color: #1d1d1f; font-size: 24px; font-weight: 600; text-align: center;">Welcome to iPong, ${username}! 🎉</h2>
     
     <p style="margin: 0 0 24px; color: #515154; font-size: 16px; line-height: 1.6; text-align: center;">
       You're almost there! We just need to verify your email address to complete your registration.
@@ -145,10 +146,10 @@ export const sendVerificationEmail = async (to: string, token: string, username:
     </div>
   `;
 
-	await transporter.sendMail({
-		from: '"ft_transcendence" <no-reply@bigbang-transcendence.com>',
-		to,
-		subject: "Verify Your Email - ft_transcendence",
-		html: getEmailTemplate(content),
-	});
+  await transporter.sendMail({
+    from: '"iPong" <no-reply@bigbang-transcendence.com>',
+    to,
+    subject: "Verify Your Email - iPong",
+    html: getEmailTemplate(content),
+  });
 };

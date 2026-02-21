@@ -31,8 +31,7 @@ const registerUser = async ({ email, username, password }) => {
 		data: {
 			email,
 			passwordHash,
-			verificationToken,
-			isEmailVerified: true,
+			verificationToken
 		},
 	});
 
